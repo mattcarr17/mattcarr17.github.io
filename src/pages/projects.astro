@@ -1,0 +1,124 @@
+---
+import StatusTag from '../components/StatusTag.astro';
+import { SITE_TITLE } from '../consts';
+import { PROJECTS, type ProjectStatus } from '../data/projects';
+import Page from '../layouts/Page.astro';
+
+const legend: ProjectStatus[] = ['Exploring', 'Building', 'Shipped', 'Paused'];
+---
+
+<Page title={`Projects — ${SITE_TITLE}`} description="What I'm exploring, building, and have shipped.">
+	<section class="row head">
+		<div class="label accent">§ Projects</div>
+		<div class="head-body">
+			<h1 class="page-title">Projects</h1>
+			<div class="legend" aria-label="Status key">
+				{legend.map((s) => <StatusTag status={s} />)}
+			</div>
+		</div>
+	</section>
+
+	<section class="row">
+		<div></div>
+		<div class="cards">
+			{
+				PROJECTS.map((p) => (
+					<article class="card">
+						<div class="card-top">
+							<h2>{p.title}</h2>
+							<StatusTag status={p.status} />
+						</div>
+						<p>{p.summary}</p>
+						{(p.repo || p.writeup) && (
+							<div class="links">
+								{p.repo && <a href={p.repo}>Repo →</a>}
+								{p.writeup && <a href={p.writeup}>Write-up →</a>}
+							</div>
+						)}
+					</article>
+				))
+			}
+		</div>
+	</section>
+</Page>
+
+<style>
+	.head {
+		padding: 64px 0 32px;
+	}
+	.head .label {
+		padding-top: 12px;
+	}
+	.head-body {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		max-width: 640px;
+	}
+	.legend {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px 14px;
+		align-items: center;
+	}
+	.row + .row {
+		border-top: 0;
+		padding-top: 8px;
+	}
+	.cards {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 24px;
+	}
+	.card {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		padding: 24px;
+		background: var(--card);
+		border: 1px solid var(--card-border);
+	}
+	.card-top {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: 12px;
+	}
+	h2 {
+		margin: 0;
+		font-size: 26px;
+		line-height: 1.15;
+		font-weight: 500;
+	}
+	p {
+		margin: 0;
+		font-size: 17px;
+		line-height: 1.5;
+		color: var(--ink-soft);
+	}
+	.links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 20px;
+		font-family: var(--mono);
+		font-size: 13px;
+	}
+	.links a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+	}
+	@media (max-width: 900px) {
+		.cards {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+	@media (max-width: 720px) {
+		.head {
+			padding: 48px 0 24px;
+		}
+		.row > div:empty {
+			display: none;
+		}
+	}
+</style>

@@ -1,124 +1,300 @@
 /*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
+  Lab Notebook — mattcarr.co
+  Graph-paper ground, ink text, a red margin rule, Newsreader + IBM Plex Mono.
+*/
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
+	--paper: #f6f4ee;
+	--card: #fbfaf6;
+	--ink: #1c2128;
+	--ink-soft: #3b4048;
+	--muted: #5a5f66;
+	--accent: #b4442e;
+	--on-accent: #f6f4ee;
+	--grid: rgba(28, 33, 40, 0.05);
+	--rule: rgba(28, 33, 40, 0.25);
+	--rule-soft: rgba(28, 33, 40, 0.15);
+	--card-border: rgba(28, 33, 40, 0.35);
+	--margin-line: rgba(180, 68, 46, 0.45);
+
+	--serif: 'Newsreader', Georgia, serif;
+	--mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+	--max: 1080px;
+	--label-col: 150px;
+	--col-gap: 32px;
+
+	color-scheme: light;
 }
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--paper: #16181c;
+		--card: #1d2025;
+		--ink: #ece8df;
+		--ink-soft: #c9c5bc;
+		--muted: #a3a7ad;
+		--accent: #e58a6e;
+		--on-accent: #16181c;
+		--grid: rgba(236, 232, 223, 0.04);
+		--rule: rgba(236, 232, 223, 0.22);
+		--rule-soft: rgba(236, 232, 223, 0.14);
+		--card-border: rgba(236, 232, 223, 0.3);
+		--margin-line: rgba(229, 138, 110, 0.4);
+		color-scheme: dark;
+	}
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+}
+
 body {
-	font-family: var(--font-atkinson);
 	margin: 0;
-	padding: 0;
-	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
-	word-wrap: break-word;
-	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background-color: var(--paper);
+	background-image:
+		linear-gradient(var(--grid) 1px, transparent 1px),
+		linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+	background-size: 24px 24px;
+	color: var(--ink);
+	font-family: var(--serif);
+	font-size: 19px;
+	line-height: 1.6;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
 }
-main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
-	line-height: 1.2;
-}
-h1 {
-	font-size: 3.052em;
-}
-h2 {
-	font-size: 2.441em;
-}
-h3 {
-	font-size: 1.953em;
-}
-h4 {
-	font-size: 1.563em;
-}
-h5 {
-	font-size: 1.25em;
-}
-strong,
-b {
-	font-weight: 700;
-}
+
 a {
 	color: var(--accent);
 }
 a:hover {
-	color: var(--accent);
+	color: var(--ink);
 }
-p {
-	margin-bottom: 1em;
+:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 3px;
 }
-.prose p {
-	margin-bottom: 2em;
-}
-textarea {
-	width: 100%;
-	font-size: 16px;
-}
-input {
-	font-size: 16px;
-}
-table {
-	width: 100%;
-}
+
 img {
 	max-width: 100%;
 	height: auto;
-	border-radius: 8px;
 }
-code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
+
+.mono {
+	font-family: var(--mono);
+}
+
+/* ---------- Page frame ---------- */
+
+.wrap {
+	width: 100%;
+	max-width: var(--max);
+	margin: 0 auto;
+	padding: 0 24px;
+}
+
+/* The notebook sheet with its red margin rule (sits just right of the label column). */
+.sheet {
+	flex: 1;
+	padding-bottom: 80px;
+	background-image: linear-gradient(
+		90deg,
+		transparent calc(24px + var(--label-col) + var(--col-gap) / 2 - 1px),
+		var(--margin-line) calc(24px + var(--label-col) + var(--col-gap) / 2 - 1px),
+		var(--margin-line) calc(24px + var(--label-col) + var(--col-gap) / 2),
+		transparent calc(24px + var(--label-col) + var(--col-gap) / 2)
+	);
+}
+
+/* Label column + content column */
+.row {
+	display: grid;
+	grid-template-columns: var(--label-col) minmax(0, 1fr);
+	gap: var(--col-gap);
+}
+.row + .row,
+.row.ruled {
+	border-top: 1px solid var(--rule);
+}
+
+.label {
+	font-family: var(--mono);
+	font-size: 12px;
+	line-height: 1.7;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	color: var(--muted);
+	padding-top: 6px;
+}
+.label.accent {
+	color: var(--accent);
+}
+
+.kicker {
+	font-family: var(--mono);
+	font-size: 11px;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--muted);
+}
+
+.page-title {
+	margin: 0;
+	font-size: 52px;
+	line-height: 1.05;
+	font-weight: 500;
+	letter-spacing: -0.02em;
+}
+
+.lede {
+	margin: 0;
+	font-size: 20px;
+	line-height: 1.5;
+	color: var(--ink-soft);
+}
+
+.more {
+	font-family: var(--mono);
+	font-size: 13px;
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	align-self: flex-start;
+}
+
+/* ---------- Status tags ---------- */
+
+.tag {
+	font-family: var(--mono);
+	font-size: 11px;
+	line-height: 1.4;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	padding: 3px 8px;
+	border-radius: 2px;
+	border: 1px solid var(--ink);
+	color: var(--ink);
+	white-space: nowrap;
+}
+.tag--building {
+	background: var(--accent);
+	border-color: var(--accent);
+	color: var(--on-accent);
+}
+.tag--shipped {
+	background: var(--ink);
+	color: var(--paper);
+}
+.tag--paused {
+	border-style: dashed;
+	border-color: var(--muted);
+	color: var(--muted);
+}
+
+/* ---------- Long-form prose (posts) ---------- */
+
+.prose {
+	max-width: 680px;
+	font-size: 19px;
+	line-height: 1.7;
+}
+.prose > :first-child {
+	margin-top: 0;
+}
+.prose h2,
+.prose h3,
+.prose h4 {
+	font-weight: 500;
+	line-height: 1.25;
+	margin: 2em 0 0.5em;
+}
+.prose h2 {
+	font-size: 30px;
+}
+.prose h3 {
+	font-size: 24px;
+}
+.prose p,
+.prose ul,
+.prose ol,
+.prose blockquote,
+.prose table,
+.prose pre {
+	margin: 0 0 1.1em;
+}
+.prose blockquote {
+	padding: 0 0 0 20px;
+	border-left: 2px solid var(--accent);
+	font-style: italic;
+	color: var(--ink-soft);
+}
+.prose code {
+	font-family: var(--mono);
+	font-size: 0.85em;
+	padding: 1px 4px;
+	background: var(--card);
+	border: 1px solid var(--rule-soft);
 	border-radius: 2px;
 }
-pre {
-	padding: 1.5em;
-	border-radius: 8px;
+.prose pre {
+	padding: 16px;
+	overflow-x: auto;
+	border: 1px solid var(--card-border);
+	border-radius: 2px;
+	font-size: 15px;
+	line-height: 1.55;
 }
-pre > code {
-	all: unset;
+.prose pre code {
+	padding: 0;
+	border: 0;
+	background: none;
+	font-size: inherit;
 }
-blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0 0 0 20px;
-	margin: 0;
-	font-size: 1.333em;
+.prose hr {
+	border: 0;
+	border-top: 1px solid var(--rule);
+	margin: 2.5em 0;
 }
-hr {
-	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+.prose table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 17px;
+	display: block;
+	overflow-x: auto;
 }
-@media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
-	main {
-		padding: 1em;
+.prose th,
+.prose td {
+	padding: 8px 12px;
+	border-bottom: 1px solid var(--rule-soft);
+	text-align: left;
+}
+.prose th {
+	font-family: var(--mono);
+	font-size: 12px;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--muted);
+	font-weight: 500;
+}
+.prose img {
+	border: 1px solid var(--card-border);
+}
+
+/* Dual-theme code blocks from Shiki */
+@media (prefers-color-scheme: dark) {
+	.astro-code,
+	.astro-code span {
+		color: var(--shiki-dark) !important;
+		background-color: var(--shiki-dark-bg) !important;
 	}
 }
 
@@ -130,12 +306,22 @@ hr {
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
 	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
 	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
+}
+
+/* ---------- Phone ---------- */
+
+@media (max-width: 720px) {
+	.row {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 6px;
+	}
+	.sheet {
+		background-image: none;
+	}
+	.page-title {
+		font-size: 40px;
+	}
 }

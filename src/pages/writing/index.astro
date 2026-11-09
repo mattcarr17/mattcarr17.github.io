@@ -1,0 +1,110 @@
+---
+import { SITE_TITLE } from '../../consts';
+import Page from '../../layouts/Page.astro';
+import { getPosts, longDate, postUrl } from '../../lib/posts';
+
+const posts = await getPosts();
+---
+
+<Page title={`Writing — ${SITE_TITLE}`} description="Math notes, essays, and project write-ups.">
+	<section class="row head">
+		<div class="label accent">§ Writing</div>
+		<div class="head-body">
+			<h1 class="page-title">Writing</h1>
+			<p class="lede">Math notes, essays, and project write-ups. Newest first.</p>
+		</div>
+	</section>
+
+	<ol class="entries">
+		{
+			posts.map((post) => (
+				<li>
+					<a class="row entry" href={postUrl(post.id)}>
+						<div class="meta">
+							<time datetime={post.data.pubDate.toISOString()}>{longDate(post.data.pubDate)}</time>
+							<span class="cat">{post.data.category}</span>
+						</div>
+						<div class="text">
+							<span class="title">{post.data.title}</span>
+							<span class="desc">{post.data.description}</span>
+						</div>
+					</a>
+				</li>
+			))
+		}
+	</ol>
+</Page>
+
+<style>
+	.head {
+		padding: 64px 0 40px;
+	}
+	.head .label {
+		padding-top: 12px;
+	}
+	.head-body {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		max-width: 640px;
+	}
+	.entries {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		border-bottom: 1px solid var(--rule);
+	}
+	.entry {
+		padding: 24px 0;
+		border-top: 1px solid var(--rule);
+		color: var(--ink);
+		text-decoration: none;
+	}
+	.entry:hover .title {
+		color: var(--accent);
+	}
+	.meta {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		padding-top: 6px;
+		font-family: var(--mono);
+		font-size: 12px;
+		color: var(--muted);
+	}
+	.cat {
+		color: var(--accent);
+		font-size: 11px;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+	.text {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		max-width: 680px;
+	}
+	.title {
+		font-size: 26px;
+		line-height: 1.25;
+		font-weight: 500;
+	}
+	.desc {
+		font-size: 17px;
+		line-height: 1.5;
+		color: var(--ink-soft);
+	}
+	@media (max-width: 720px) {
+		.head {
+			padding: 48px 0 32px;
+		}
+		.meta {
+			flex-direction: row;
+			gap: 12px;
+			padding-top: 0;
+		}
+		.title {
+			font-size: 22px;
+		}
+	}
+</style>
