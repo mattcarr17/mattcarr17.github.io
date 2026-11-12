@@ -1,7 +1,7 @@
 ---
 title: 'Deep Work - Differential Equations Finals Prep'
 description: 'Finals preparation for Differential Equations - reviewing Laplace transforms, inverse transforms with partial fractions, step functions, and classifying stability of systems using eigenvalues and the trace-determinant plane.'
-category: 'Deep work'
+category: 'Math'
 pubDate: '2025-12-28'
 ---
 

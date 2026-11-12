@@ -1,6 +1,6 @@
 ---
 import StatusTag from '../components/StatusTag.astro';
-import { LOCATION, SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { PROJECTS } from '../data/projects';
 import Page from '../layouts/Page.astro';
 import { getPosts, postUrl, shortDate } from '../lib/posts';
@@ -11,13 +11,13 @@ const current = PROJECTS.filter((p) => p.featured).slice(0, 4);
 
 <Page title={SITE_TITLE} description={SITE_DESCRIPTION}>
 	<section class="row intro">
-		<div class="label accent loc">{LOCATION}</div>
+		<div class="loc"></div>
 		<div class="intro-body">
 			<h1>Matt Carr</h1>
 			<p class="motto">Pursuing the fullest expression of mind, body, and spirit.</p>
 			<p class="lede">
-				I am studying applied math at CU Boulder. I am fascinated by personal and collective potential. Here is where
-				I share my personal ideas and explorations.
+				I am studying applied math at CU Boulder. Curious about quite a few things. Here is where
+				I share my personal ideas and what I'm working on.
 			</p>
 		</div>
 	</section>
@@ -58,9 +58,6 @@ const current = PROJECTS.filter((p) => p.featured).slice(0, 4);
 <style>
 	.intro {
 		padding: 72px 0 64px;
-	}
-	.loc {
-		padding-top: 16px;
 	}
 	.intro-body {
 		display: flex;
@@ -130,7 +127,7 @@ const current = PROJECTS.filter((p) => p.featured).slice(0, 4);
 			padding: 48px 0 40px;
 		}
 		.loc {
-			padding-top: 0;
+			display: none;
 		}
 		h1 {
 			font-size: 48px;

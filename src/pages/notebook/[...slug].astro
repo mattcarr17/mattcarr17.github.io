@@ -1,0 +1,104 @@
+---
+import { type CollectionEntry, render } from 'astro:content';
+import { SITE_TITLE } from '../../consts';
+import Page from '../../layouts/Page.astro';
+import { getNotes, longDate } from '../../lib/posts';
+
+export async function getStaticPaths() {
+	const notes = await getNotes();
+	return notes.map((note) => ({
+		params: { slug: note.id },
+		props: note,
+	}));
+}
+type Props = CollectionEntry<'notebook'>;
+
+const note = Astro.props;
+const { title, date, tags } = note.data;
+const { Content } = await render(note);
+---
+
+<Page title={`${title} — ${SITE_TITLE}`} description={`Notebook: ${title}`}>
+	<article>
+		<header class="row note-head">
+			<div class="label meta">
+				<time datetime={date.toISOString()}>{longDate(date)}</time>
+				<span class="accent">Notebook</span>
+			</div>
+			<div class="titles">
+				<h1 class="page-title">{title}</h1>
+				{
+					tags.length > 0 && (
+						<div class="tags">
+							{tags.map((t) => (
+								<span>#{t}</span>
+							))}
+						</div>
+					)
+				}
+			</div>
+		</header>
+
+		<div class="row ruled body">
+			<div class="label"><a href="/notebook">← Notebook</a></div>
+			<div class="prose">
+				<Content />
+			</div>
+		</div>
+	</article>
+</Page>
+
+<style>
+	.note-head {
+		padding: 64px 0 40px;
+	}
+	.meta {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		padding-top: 12px;
+	}
+	.meta .accent {
+		color: var(--accent);
+		font-size: 11px;
+		letter-spacing: 0.06em;
+	}
+	.titles {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		max-width: 680px;
+	}
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px 14px;
+		font-family: var(--mono);
+		font-size: 13px;
+		color: var(--accent);
+	}
+	.body {
+		padding-top: 32px;
+	}
+	.body .label a {
+		color: var(--muted);
+		text-decoration: none;
+		text-transform: none;
+	}
+	.body .label a:hover {
+		color: var(--accent);
+	}
+	@media (max-width: 720px) {
+		.note-head {
+			padding: 48px 0 32px;
+		}
+		.meta {
+			flex-direction: row;
+			flex-wrap: wrap;
+			gap: 4px 12px;
+		}
+		.body .label {
+			display: none;
+		}
+	}
+</style>

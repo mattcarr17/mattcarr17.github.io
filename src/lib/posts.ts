@@ -8,6 +8,14 @@ export async function getPosts() {
 
 export const postUrl = (id: string) => `/writing/${id}/`;
 
+/** Notebook entries, newest first. */
+export async function getNotes() {
+	const notes = await getCollection('notebook');
+	return notes.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+}
+
+export const noteUrl = (id: string) => `/notebook/${id}/`;
+
 /** "08 NOV 2026" */
 export const longDate = (d: Date) =>
 	d
